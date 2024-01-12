@@ -255,3 +255,15 @@ python main.py --dataset CIFAR-10 \
 We test our approach on the `CIFAR-10` dataset with the intention to extend our model to 4 other small low resolution datasets: `Tiny-Imagenet`, `CIFAR100`, `CINIC10` and `SVHN`. All training took place on a single V100 GPU with total training time taking approximately `4101.15s`. We have included the notebook in this repository that can be downloaded and run in any environment with access to a GPU.
   * CIFAR10
     * ```resnet_cifar10_input32``` - 90.7 @ 32
+   
+<hr>
+
+## Citations
+```bibtex
+@article{He2015,
+	author = {Kaiming He and Xiangyu Zhang and Shaoqing Ren and Jian Sun},
+	title = {Deep Residual Learning for Image Recognition},
+	journal = {arXiv preprint arXiv:1512.03385},
+	year = {2015}
+}
+```
