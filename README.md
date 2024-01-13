@@ -7,7 +7,7 @@
 1. [Highlights](#Highlights)
 2. [ResNet Primer](#ResNet)
 3. [Requirements](#Requirements)
-4. [Supervised Training](#Training)
+4. [Usage](#Training)
 5. [Results](#Results)
 
 
@@ -212,18 +212,6 @@ ResNet(
   )
 )
 ```
-A breakdown of the FLOPs and number of parameters:
-```
-total flops : 584217600
-total activations: 679946
-number of parameter: 11200882
-| module   | #parameters or shape   | #flops   |
-|:---------|:-----------------------|:---------|
-| model    | 11.201M                | 0.584G   |
-|  0       |  28.768K               |  29.458M |
-|  1       |  11.167M               |  0.555G  |
-|  2       |  5.13K                 |  13.312K |
-```
 
 <hr>
 
@@ -234,27 +222,35 @@ pip install -r requirements.txt
 
 <hr>
 
-## Supervised Training
-This repository is intended to be ran in a notebook rather than from the command line. The organization of the files is intended to break apart `main.py` to highlight the different components. Future work will be completed to turn this repository into a working directory.
-
-The main hyperparamerters used for training and inference are listed below. The full set of hyperparamters can be found in `parser.py`.
+## Usage
+To replicate the reported results, clone this repo
 ```shell
-python main.py --dataset CIFAR-10 \
-               --datapath "/path/to/data/folder" \
-               --batch_size 32 \
-               --epochs 100 \
-               --learning rate 1e-3 \
-               --weight decay 1e-1 \
-               --min lr 1e-6 \
-               --warm-up epochs 10 \
+cd your_directory git clone git@github.com:jordandeklerk/ResNet-pytorch.git
+```
+and run the main training script
+```shell
+python train.py 
 ```
 
 <hr>
 
 ## Results
-We test our approach on the `CIFAR-10` dataset with the intention to extend our model to 4 other small low resolution datasets: `Tiny-Imagenet`, `CIFAR100`, `CINIC10` and `SVHN`. All training took place on a single V100 GPU with total training time taking approximately `4101.15s`. We have included the notebook in this repository that can be downloaded and run in any environment with access to a GPU.
+We test our approach on the `CIFAR-10` dataset with the intention to extend our model to 4 other small low resolution datasets: `Tiny-Imagenet`, `CIFAR100`, `CINIC10` and `SVHN`. All training took place on a single V100 GPU with total training time taking approximately `4101.15s`.
   * CIFAR10
     * ```resnet_cifar10_input32``` - 90.7 @ 32
+
+Flop analysis:
+```
+total flops: 584217600
+total activations: 679946
+number of parameter: 11200882
+| module   | #parameters or shape   | #flops   |
+|:---------|:-----------------------|:---------|
+| model    | 11.201M                | 0.584G   |
+|  0       |  28.768K               |  29.458M |
+|  1       |  11.167M               |  0.555G  |
+|  2       |  5.13K                 |  13.312K |
+```
    
 <hr>
 

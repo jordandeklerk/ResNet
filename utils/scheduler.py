@@ -4,7 +4,6 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.optim.lr_scheduler import _LRScheduler
-from parser import args
 
 
 class CosineAnnealingWarmupRestarts(_LRScheduler):
@@ -92,10 +91,17 @@ class CosineAnnealingWarmupRestarts(_LRScheduler):
             param_group['lr'] = lr
 
 
-def build_scheduler(args, optimizer, n_iter_per_epoch):
-    num_steps = int(args.epochs * n_iter_per_epoch)
+def build_scheduler(args, optimizer):
 
-    lr_scheduler = CosineAnnealingWarmupRestarts(optimizer, first_cycle_steps=50, cycle_mult=1,
-                                                                    max_lr=args.lr, min_lr=args.min_lr, warmup_steps=args.warmup_epochs,
-                                                                    gamma=args.gamma)
+    lr_scheduler = CosineAnnealingWarmupRestarts(
+            optimizer, 
+            first_cycle_steps=50, 
+            cycle_mult=1, 
+            max_lr=args.lr,
+            min_lr=args.min_lr, 
+            warmup_steps=args.warmup_epochs,
+            gamma=args.gamma
+        )
     return lr_scheduler
+
+lr_scheduler = build_scheduler(args, optimizer)
