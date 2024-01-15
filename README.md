@@ -7,7 +7,7 @@
 1. [Highlights](#Highlights)
 2. [ResNet Primer](#ResNet)
 3. [Requirements](#Requirements)
-4. [Usage](#Training)
+4. [Usage](#Usage)
 5. [Results](#Results)
 
 
@@ -42,177 +42,6 @@ A typical ResNet architecture looks like the following:
 
 <img src="./images/res2.png" width="550"></img>
 
-Our specific implementation is given here:
-```
-ResNet(
-  (0): Stem(
-    (0): ConvBlock(
-      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (2): SiLU(inplace=True)
-    )
-    (1): ConvBlock(
-      (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (2): SiLU(inplace=True)
-    )
-    (2): ConvBlock(
-      (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (2): SiLU(inplace=True)
-    )
-  )
-  (1): ResidualStack(
-    (0): ResidualBlock(
-      (shortcut): Identity()
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-    (1): ResidualBlock(
-      (shortcut): Identity()
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (3): ResidualBlock(
-      (shortcut): ConvBlock(
-        (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-    (4): ResidualBlock(
-      (shortcut): Identity()
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-    (5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (6): ResidualBlock(
-      (shortcut): ConvBlock(
-        (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-    (7): ResidualBlock(
-      (shortcut): Identity()
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-    (8): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (9): ResidualBlock(
-      (shortcut): ConvBlock(
-        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-    (10): ResidualBlock(
-      (shortcut): Identity()
-      (residual): BasicResidual(
-        (0): ConvBlock(
-          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-          (2): SiLU(inplace=True)
-        )
-        (1): ConvBlock(
-          (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-        (2): Dropout2d(p=0.0, inplace=False)
-      )
-      (act): SiLU(inplace=True)
-    )
-  )
-  (2): Head(
-    (0): AdaptiveAvgPool2d(output_size=1)
-    (1): Flatten(start_dim=1, end_dim=-1)
-    (2): Dropout(p=0.3, inplace=False)
-    (3): Linear(in_features=512, out_features=10, bias=True)
-  )
-)
-```
-
 <hr>
 
 ## Requirements
@@ -235,7 +64,7 @@ python train.py
 <hr>
 
 ## Results
-We test our approach on the `CIFAR-10` dataset with the intention to extend our model to 4 other small low resolution datasets: `Tiny-Imagenet`, `CIFAR100`, `CINIC10` and `SVHN`. All training took place on a single V100 GPU with total training time taking approximately `4101.15s`.
+We test our approach on the `CIFAR-10` dataset with the intention to extend our model to 4 other small low resolution datasets: `Tiny-Imagenet`, `CIFAR100`, `CINIC10` and `SVHN`. All training took place on a single A100 GPU.
   * CIFAR10
     * ```resnet_cifar10_input32``` - 90.7 @ 32
 
