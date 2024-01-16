@@ -14,7 +14,7 @@
 <hr>
 
 ## Highlights
-This project is a implementation from scratch of a slightly modified version of the vanilla ResNet introduced in the paper [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385). We implement this model on the small scale benchmark dataset `CIFAR-10`. One of the goals of this project is to illustrate the speed gain of the ResNet model in comparison to the vision transformer models while maintaining comparable accuracy on `CIFAR-10` and other small-scale datasets. 
+This project is an implementation from scratch of a slightly modified version of the vanilla ResNet introduced in the paper [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385). We implement this model on the small scale benchmark dataset `CIFAR-10`. One of the goals of this project is to illustrate the speed gain of the ResNet model in comparison to the vision transformer models while maintaining comparable accuracy on `CIFAR-10` and other small-scale datasets. 
 
 For an extremely fast ResNet model on `CIFAR-10`, check out David Page's amazing blog post [How to Train Your ResNet 8: Bag of Tricks](https://myrtle.ai/learn/how-to-train-your-resnet-8-bag-of-tricks/), where a modified ResNet is trained to reach 94% accuracy in 26 seconds on a V100 GPU.
 
